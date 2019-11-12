@@ -39,7 +39,8 @@ def main() -> None:
         res += get_two_pair(equ_list, neq_list)
     new_df = pd.DataFrame(res)
     new_df.columns = ['question1', 'question2', 'label']
-    new_df.to_csv(os.path.join(args.data_path, 'train_set.csv'), index=False)
+    new_df.to_csv(os.path.join(args.data_path, 'train_set.csv'),
+                  index=False, sep='\t')
 
 
 if __name__ == "__main__":

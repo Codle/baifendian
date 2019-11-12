@@ -1,4 +1,4 @@
-""" 
+"""
 This file is used to create PyTorch Dataset
 """
 
@@ -6,7 +6,7 @@ import torch
 import pandas as pd
 import os
 from transformers import BertTokenizer
-from torch.utils.data import Dataset, DataLoader, RandomSampler
+from torch.utils.data import Dataset
 
 
 class InputFeature(object):
@@ -33,8 +33,9 @@ class InputFeature(object):
 
 
 class BaiFengdianDataset(Dataset):
-    def __init__(self, data):
+    def __init__(self, data, df=None):
         self.data = data
+        self.df = df
 
     def __len__(self):
         return len(self.data)
@@ -47,9 +48,10 @@ class BaiFengdianDataset(Dataset):
 
 def get_dataset(args):
     if args.mode == 'train':
-        df = pd.read_csv(os.path.join(args.data_path, 'train_set.csv'))
+        df = pd.read_csv(os.path.join(
+            args.data_path, 'train_set.csv'), sep='\t')
     elif args.mode == 'dev':
-        pass
+        df = pd.read_csv(os.path.join(args.data_path, 'dev_set.csv'), sep='\t')
     else:
         raise KeyError("mode only can be train or dev or test")
 
@@ -68,7 +70,8 @@ def get_dataset(args):
             max_length=max_length,
         )
 
-        input_ids, token_type_ids = inputs["input_ids"], inputs["token_type_ids"]
+        input_ids = inputs["input_ids"]
+        token_type_ids = inputs["token_type_ids"]
 
         # tokens are attended to.
         attention_mask = [1] * len(input_ids)
@@ -79,7 +82,7 @@ def get_dataset(args):
         input_ids = input_ids + ([0] * padding_length)
         attention_mask = attention_mask + ([0] * padding_length)
         token_type_ids = token_type_ids + ([0] * padding_length)
-        
+
         if args.mode == 'train' or args.mode == 'dev':
             label = [1] if df['label'][i] else [0]
             data.append(InputFeature(
@@ -88,4 +91,4 @@ def get_dataset(args):
             data.append(InputFeature(
                 (input_ids, attention_mask, token_type_ids)))
 
-    return BaiFengdianDataset(data)
+    return BaiFengdianDataset(data, df)
