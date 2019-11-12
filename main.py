@@ -18,7 +18,7 @@ parse.add_argument('--mode', default='train', type=str, help='以何种形式运
 parse.add_argument('--data_path', default='./data', type=str, help='数据集文件夹')
 parse.add_argument('--output_dir', default='./output',
                    type=str, help='模型保存文件夹')
-parse.add_argument('--best_step', default=0, type=str, help='最佳迭代次数')
+parse.add_argument('--best_step', default=0, type=int, help='最佳迭代次数')
 parse.add_argument('--max_length', default=128, help='句子最大长度')
 parse.add_argument('--train_with_eval', default=True,
                    type=bool, help='是否一边训练一边验证')
@@ -157,13 +157,15 @@ def main():
     if args.mode == 'train':
         # 将两个句子拼接在一起然后使用句子分类模型
         model = BertForSequenceClassification.from_pretrained(
-            'bert-base-chinese').to('cuda')
+            'bert-base-chinese').to(device)
         train(model, dataset, args)
     else:
-        args = torch.load(os.path.join(args.output_dir, 'training_args.bin'))
+        # args = torch.load(
+        #     os.path.join(args.output_dir,
+        #                  f'checkpoint-{args.best_step}/training_args.bin'))
         model = BertForSequenceClassification.from_pretrained(
             os.path.join(args.output_dir, f'checkpoint-{args.best_step}')
-        )
+        ).to(device)
         pred = predict(model, dataset, args)[0]
         pred = pd.Series(pred.numpy().tolist())
         res_csv = pd.concat([dataset.df['qid'], pred], axis=1)

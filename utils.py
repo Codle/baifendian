@@ -83,7 +83,7 @@ def get_dataset(args):
         attention_mask = attention_mask + ([0] * padding_length)
         token_type_ids = token_type_ids + ([0] * padding_length)
 
-        if args.mode == 'train' or args.mode == 'dev':
+        if args.mode == 'train':
             label = [1] if df['label'][i] else [0]
             data.append(InputFeature(
                 (input_ids, attention_mask, token_type_ids, label)))
