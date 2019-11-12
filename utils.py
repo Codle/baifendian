@@ -52,6 +52,8 @@ def get_dataset(args):
             args.data_path, 'train_set.csv'), sep='\t')
     elif args.mode == 'dev':
         df = pd.read_csv(os.path.join(args.data_path, 'dev_set.csv'), sep='\t')
+    elif args.mode == 'simple_test':
+        df = pd.read_csv(os.path.join(args.data_path, 'simple_set.csv'), sep='\t')
     else:
         raise KeyError("mode only can be train or dev or test")
 
