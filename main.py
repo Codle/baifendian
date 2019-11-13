@@ -60,7 +60,7 @@ def train(model, dataset, args):
 
     global_step = 0
     tr_loss, logging_loss = 0.0, 0.0
-    best_step, best_acc = 0, 1.0
+    best_step, best_acc = 0, 0.0
 
     logger.info("***** Running training *****")
     logger.info(f"  Num examples = {len(dataset)}")
