@@ -3,7 +3,6 @@
 from typing import Any, Dict, Optional
 
 import torch
-import torch.functional as F
 import torch.nn as nn
 import torch.utils.data as data_utils
 
@@ -31,13 +30,14 @@ def do_train(model: nn.Module,
         scheduler: use to change learing rate;
         loss_fn: the function to compute the loss;
     """
-    model.train()
     dataiterator = tx.data.DataIterator(train_loader)
     # dataiterator.switch_to_train_data()
     logging_loss = 0.0
     global_loss = 0.0
 
     for batch in dataiterator:
+        model.train()
+        optimizer.zero_grad()
         # 训练数据计算loss
         outputs = model(inputs=batch['inputs'],
                         sequence_length=batch['sequence_length'],
@@ -56,7 +56,8 @@ def do_train(model: nn.Module,
         step = scheduler.last_epoch
         dis_steps = cfg['display_steps']
         if dis_steps > 0 and step % dis_steps == 0:
-            logger.debug(f"step: {step}; loss: {global_loss - logging_loss}")
+            logger.debug(f"step: {step}; "
+                         f"loss: {(global_loss - logging_loss)/dis_steps:.2f}")
             logging_loss = global_loss
 
         eval_steps = cfg['eval_steps']

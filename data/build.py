@@ -39,11 +39,12 @@ class Dataset(tx.data.DatasetBase):
         """
         encode_text = self.tokenizer.encode_text(text_a=raw_example['text_a'],
                                                  text_b=raw_example['text_a'],
-                                                 max_seq_length=128)
-        length = 128
+                                                 max_seq_length=64)
+        length = 64
         for idx, i in enumerate(encode_text[2]):
             if i == 0:
                 length = idx+1
+                break
         return {
             'input_ids': encode_text[0],
             'segment_ids': encode_text[1],

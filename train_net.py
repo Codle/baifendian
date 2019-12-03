@@ -23,7 +23,7 @@ def main():
     # 生成 train 和 valid 数据集
     train_config = config['dataset']['train']
     train_df = pd.read_csv(train_config['data_path'], sep='\t')
-    train, valid = train_test_split(train_df, test_size=0.3)
+    train, valid = train_test_split(train_df, test_size=0.2)
     train_dataset = build_dataloader(train, train_config, device=device)
     valid_dataset = build_dataloader(valid, train_config, device=device)
 
