@@ -1,0 +1,31 @@
+# default config of sequence classification
+num_epochs: 5
+max_sequence_length: 128
+display_steps: 100
+eval_steps: 1000
+train_valid_split: 0.2
+
+optimizer:
+  warmup_proportion: 0.1
+  static_lr: 1e-5
+
+# model
+model:
+  hidden_size: 768
+  hidden_dropout_prob: 0.1
+  num_labels: 2
+
+# dataset
+dataset:
+  train:
+    name: 'train'
+    data_path: 'data/dataset/train_set.csv'
+    hparams:
+      batch_size: 6
+      shuffle: True
+  test:
+    name: 'test'
+    data_path: 'data/dataset/dev_set.csv'
+    hparams:
+      batch_size: 6
+      shuffle: False

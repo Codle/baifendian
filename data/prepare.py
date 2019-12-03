@@ -1,4 +1,5 @@
 """ 数据预处理
+生成训练数据
 """
 
 import argparse
