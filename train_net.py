@@ -23,7 +23,9 @@ def main():
     # 生成 train 和 valid 数据集
     train_config = config['dataset']['train']
     train_df = pd.read_csv(train_config['data_path'], sep='\t')
-    train, valid = train_test_split(train_df, test_size=0.2)
+    train_df.sample(frac=1)
+    train, valid = train_test_split(
+        train_df, test_size=config['train_valid_split'])
     train_dataset = build_dataloader(train, train_config, device=device)
     valid_dataset = build_dataloader(valid, train_config, device=device)
 
@@ -31,7 +33,7 @@ def main():
     model_config = config['model']
     model = BertClassifier(model_config)
     model.to(device)
-    optimizer = build_optimizer(model)
+    optimizer = build_optimizer(model, config['optimizer'])
 
     # 计算训练步数
     num_train_steps = int(len(train_dataset) / train_dataset.batch_size *

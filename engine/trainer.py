@@ -49,9 +49,10 @@ def do_train(model: nn.Module,
         global_loss += loss.item()
         # 反向传播
         loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
         scheduler.step()
-
+        model.zero_grad()
         # 打印日志等操作
         step = scheduler.last_epoch
         dis_steps = cfg['display_steps']

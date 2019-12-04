@@ -1,7 +1,7 @@
 import texar.torch as tx
 
 
-def build_optimizer(model):
+def build_optimizer(model, cfg=None):
     static_lr = 1e-5
     # 设置优化器
     vars_with_decay = []
@@ -18,7 +18,7 @@ def build_optimizer(model):
     opt_params = [{
         # 对于需要衰减的参数
         'params': vars_with_decay,
-        'weight_decay': 0.01,
+        'weight_decay': 0.00,
     }, {
         'params': vars_without_decay,
         'weight_decay': 0.0,

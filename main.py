@@ -11,11 +11,12 @@ from tqdm import tqdm, trange
 from transformers import (AdamW, BertForSequenceClassification,
                           WarmupLinearSchedule)
 
-from utils import get_dataset
+from data_utils import get_dataset
 
 parse = argparse.ArgumentParser()
 parse.add_argument('--mode', default='train', type=str, help='以何种形式运行')
-parse.add_argument('--data_path', default='./data', type=str, help='数据集文件夹')
+parse.add_argument('--data_path', default='./data/dataset', type=str,
+                   help='数据集文件夹')
 parse.add_argument('--output_dir', default='./output',
                    type=str, help='模型保存文件夹')
 parse.add_argument('--best_step', default=0, type=int, help='最佳迭代次数')

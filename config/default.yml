@@ -2,12 +2,12 @@
 num_epochs: 5
 max_sequence_length: 64
 display_steps: 100
-eval_steps: 1000
+eval_steps: 2000
 train_valid_split: 0.2
 
 optimizer:
   warmup_proportion: 0.0
-  static_lr: 1e-5
+  static_lr: 0.000001
 
 # model
 model:
